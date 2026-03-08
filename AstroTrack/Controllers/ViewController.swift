@@ -7,7 +7,7 @@
 
 import UIKit
 import MapKit
-
+import CoreLocation
 
 
 class ViewController: UIViewController {
@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView : MKMapView!
     //ISS marker
     var issAnnotation = MKPointAnnotation()
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         mapView.addAnnotation(issAnnotation)
         
         //Update every 2 seconds
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
+        Timer.scheduledTimer(withTimeInterval: 4, repeats: true) { _ in
             self.fetchISS()
         }
         
@@ -40,14 +40,15 @@ class ViewController: UIViewController {
             //Calling on main UI Thread
             DispatchQueue.main.async {
                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                
                 //Move the market
-            
-                    self.issAnnotation.coordinate = coordinate
-                self.issAnnotation.title = "ISS Stellite"
+                self.issAnnotation.coordinate = coordinate
+                self.issAnnotation.title = "ISS Satellite"
             
                 //Center the Map
                 let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 30, longitudeDelta: 30))
                 self.mapView.setRegion(region, animated: true)
+                
             }
             
         }
